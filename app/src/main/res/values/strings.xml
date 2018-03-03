@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">Client</string>
+    <string name="clientNameText">Nick Name</string>
+    <string name="clientNameEditText">Enter Your Nick</string>
+    <string name="findServerButtonText">Find Server</string>
+    <string name="listOfServerText">List Of Server Available :</string>
+    <string name="tableNoText">Table No</string>
+    <string name="tableNoEditText">1</string>
+    <string name="seatNoText">Seat No</string>
+    <string-array name="seatNo_Array">
+        <item>North</item>
+        <item>East</item>
+        <item>South</item>
+        <item>West</item>
+    </string-array>
+
+    <string name="connectButtonText">Connect</string>
+
+</resources>

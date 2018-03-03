@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/relativeLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="16dp"
+    android:paddingRight="16dp">
+
+    <TextView
+        android:id="@+id/clientNameTextView"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="12dp"
+        android:gravity="center"
+        android:text="@string/clientNameText"
+        tools:text="Nick Name" />
+
+    <EditText
+        android:id="@+id/clientNameEditText"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_alignTop="@+id/clientNameTextView"
+        android:layout_marginEnd="17dp"
+        android:layout_marginRight="17dp"
+        android:ems="10"
+        android:text="@string/clientNameEditText"
+        android:inputType="textPersonName" />
+
+    <Button
+        android:id="@+id/findServerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/clientNameEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="17dp"
+        android:onClick="onClickFindServer"
+        android:text="@string/findServerButtonText"
+        tools:text="Find Server" />
+
+    <ScrollView
+        android:id="@+id/scrollView"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignLeft="@+id/clientNameTextView"
+        android:layout_alignStart="@+id/clientNameTextView"
+        android:layout_below="@+id/findServerButton"
+        android:layout_marginTop="23dp">
+
+        <RelativeLayout
+            android:id="@+id/serverListRelativeLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </RelativeLayout>
+
+    </ScrollView>
+
+    <TextView
+        android:id="@+id/tableNoTextView"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/tableNoEditText"
+        android:gravity="center"
+        android:text="@string/tableNoText"
+        tools:text="Table No" />
+
+    <EditText
+        android:id="@+id/tableNoEditText"
+        android:layout_width="200dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/clientNameEditText"
+        android:layout_alignStart="@+id/clientNameEditText"
+        android:layout_below="@+id/scrollView"
+        android:layout_marginTop="45dp"
+        android:ems="10"
+        android:inputType="number"
+        android:text="@string/tableNoEditText" />
+
+    <TextView
+        android:id="@+id/seatNoTextview"
+        android:layout_width="90dp"
+        android:layout_height="40dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tableNoTextView"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="@string/seatNoText"
+        tools:text="Seat No" />
+
+    <Spinner
+        android:id="@+id/seatNoSpinner"
+        android:layout_width="100dp"
+        android:layout_height="40dp"
+        android:layout_alignLeft="@+id/tableNoEditText"
+        android:layout_alignStart="@+id/tableNoEditText"
+        android:layout_alignTop="@+id/seatNoTextview" />
+
+    <Button
+        android:id="@+id/connectServerButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/seatNoSpinner"
+        android:layout_alignEnd="@+id/tableNoEditText"
+        android:layout_alignRight="@+id/tableNoEditText"
+        android:onClick="onClickConnectServer"
+        android:text="@string/connectButtonText"
+        tools:text="Connect" />
+
+</RelativeLayout>
