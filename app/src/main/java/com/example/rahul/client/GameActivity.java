@@ -1,6 +1,7 @@
 package com.example.rahul.client;
 
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -22,6 +23,7 @@ import java.util.ArrayList;
 public class GameActivity extends AppCompatActivity {
 
     Client client = null;
+    Handler handler = new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,30 +35,27 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void startGame(){
-        /*
-        ArrayList<Integer> cards = new ArrayList<>();
-        final String[] cardsString = new String[1];
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                cardsString[0] = client.getTcpSocket().receive();
+                ArrayList<Integer> cards = receiveCards();
+                displayCards(cards);
             }
         });
         thread.start();
-        try {
-            thread.join();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        displayBiddingBox();
+    }
 
-        String cardsStringArray[] = cardsString[0].substring(1, cardsString[0].length()-1).split(", ");
+    public ArrayList<Integer> receiveCards(){
+        ArrayList<Integer> cards = new ArrayList<>();
+        String cardsString = client.getTcpSocket().receive();
+        String cardsStringArray[] = cardsString.substring(1, cardsString.length()-1).split(", ");
+
         for(int i=0; i<cardsStringArray.length; i++){
             cards.add(Integer.parseInt(cardsStringArray[i]));
         }
-        */
-        displayBiddingBox();
-        displayCards();
+        return cards;
     }
 
     public void displayBiddingBox(){
@@ -66,7 +65,6 @@ public class GameActivity extends AppCompatActivity {
         Display display = getWindowManager().getDefaultDisplay();
         int displayWidth = display.getWidth();
         int displayHeight = display.getHeight();
-
 
         int buttonSize = (int) (displayWidth*(0.1));
         int leftMargin = (int) (displayWidth*(0.25));
@@ -92,7 +90,6 @@ public class GameActivity extends AppCompatActivity {
                                               @Override
                                               public void onClick(View view) {
                                                     client.getTcpSocket().send("clicked on bidding box" + view.getId());
-                                                    Log.e("check","clickedd");
                                               }
                                           }
                 );
@@ -106,7 +103,12 @@ public class GameActivity extends AppCompatActivity {
     }
 
 
-    public void displayCards(){
-
+    public void displayCards(final ArrayList<Integer> cards){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                // display player cards here
+            }
+        });
     }
 }
