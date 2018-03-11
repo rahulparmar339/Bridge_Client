@@ -25,7 +25,11 @@ public class GameActivity extends AppCompatActivity {
 
     Client client = null;
     Handler handler = new Handler();
-
+    int currBid = 0;
+    int doubleStatus =0;
+    int redoubleStatus = 0;
+    int lastProposer = -1;
+    boolean bidTurn = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,31 +40,35 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void startGame(){
+        displayBiddingBox();
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 ArrayList<Integer> cards = receiveCards();
                 displayCards(cards);
+
+                while(true){
+                    String bidData = client.getTcpSocket().receive();
+                    if(bidData.compareTo("bid finished")==0){
+                        break;
+                    }
+                    else {
+                        bidTurn = true;
+                        String bidDataArray[] = bidData.split(" ");
+                        currBid = Integer.parseInt(bidDataArray[0]);
+                        lastProposer = Integer.parseInt(bidDataArray[1]);
+                        doubleStatus = Integer.parseInt(bidDataArray[2]);
+                        redoubleStatus = Integer.parseInt(bidDataArray[3]);
+                    }
+                }
             }
         });
         thread.start();
-        displayBiddingBox();
-    }
 
-    public ArrayList<Integer> receiveCards(){
-        ArrayList<Integer> cards = new ArrayList<>();
-        String cardsString = client.getTcpSocket().receive();
-        String cardsStringArray[] = cardsString.substring(1, cardsString.length()-1).split(", ");
-
-        for(int i=0; i<cardsStringArray.length; i++){
-            cards.add(Integer.parseInt(cardsStringArray[i]));
-        }
-        return cards;
     }
 
     public void displayBiddingBox(){
-
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -90,19 +98,33 @@ public class GameActivity extends AppCompatActivity {
                 button.setOnClickListener(new View.OnClickListener() {
                                               @Override
                                               public void onClick(View view) {
-                                                    client.getTcpSocket().send("clicked on bidding box" + view.getId());
+                                                    if(bidTurn==true){
+                                                        if(currBid<view.getId()){
+                                                            client.getTcpSocket().send(""+view.getId());
+                                                        }
+                                                        bidTurn = false;
+                                                    }
+
                                               }
                                           }
                 );
                 layout.addView(button);
-
-
                 leftMargin+=buttonSize;
             }
             topMargin += buttonSize;
         }
     }
 
+    public ArrayList<Integer> receiveCards(){
+        ArrayList<Integer> cards = new ArrayList<>();
+        String cardsString = client.getTcpSocket().receive();
+        String cardsStringArray[] = cardsString.substring(1, cardsString.length()-1).split(", ");
+
+        for(int i=0; i<cardsStringArray.length; i++){
+            cards.add(Integer.parseInt(cardsStringArray[i]));
+        }
+        return cards;
+    }
 
     public void displayCards(final ArrayList<Integer> cards){
         handler.post(new Runnable() {
