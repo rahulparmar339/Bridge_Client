@@ -1,5 +1,6 @@
 package com.example.rahul.client;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
@@ -30,6 +31,8 @@ public class GameActivity extends AppCompatActivity {
     int redoubleStatus = 0;
     int lastProposer = -1;
     boolean bidTurn = false;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +44,7 @@ public class GameActivity extends AppCompatActivity {
 
     public void startGame(){
         displayBiddingBox();
+        Log.e("checck"," checked");
 
         Thread thread = new Thread(new Runnable() {
             @Override
@@ -50,7 +54,10 @@ public class GameActivity extends AppCompatActivity {
 
                 while(true){
                     String bidData = client.getTcpSocket().receive();
+                    Log.e("check","bidData: "+bidData);
+                    
                     if(bidData.compareTo("bid finished")==0){
+                        removeBiddingBox();
                         break;
                     }
                     else {
@@ -62,12 +69,21 @@ public class GameActivity extends AppCompatActivity {
                         redoubleStatus = Integer.parseInt(bidDataArray[3]);
                     }
                 }
+
+
             }
         });
         thread.start();
 
     }
+    public void removeBiddingBox(){
+        RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
+        for(int i=0; i<38 ;i++){
+            layout.removeView( findViewById(i));
+        }
+    }
 
+    @SuppressLint("ResourceType")
     public void displayBiddingBox(){
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
 
@@ -113,6 +129,82 @@ public class GameActivity extends AppCompatActivity {
             }
             topMargin += buttonSize;
         }
+
+        leftMargin = (int) (displayWidth*(0.25));
+
+        Button xx = new Button(this);
+        xx.setText("XX");
+        xx.setId(35);
+
+        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) (buttonSize * 1.5), buttonSize);
+        params.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+        xx.setPadding(0,0,0,0);
+        xx.setLayoutParams(params);
+
+        xx.setOnClickListener(new View.OnClickListener() {
+                                      @Override
+                                      public void onClick(View view) {
+                                          if(bidTurn==true){
+                                              if(currBid<view.getId()){
+                                                  client.getTcpSocket().send(""+view.getId());
+                                              }
+                                              bidTurn = false;
+                                          }
+
+                                      }
+                                  }
+        );
+        layout.addView(xx);
+        leftMargin += buttonSize*1.5;
+
+        Button pass = new Button(this);
+        pass.setText("PASS");
+        pass.setId(36);
+
+        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams((int) (buttonSize * 2), buttonSize);
+        params1.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+        pass.setPadding(0,0,0,0);
+        pass.setLayoutParams(params1);
+
+        pass.setOnClickListener(new View.OnClickListener() {
+                                  @Override
+                                  public void onClick(View view) {
+                                      if(bidTurn==true){
+                                          if(currBid<view.getId()){
+                                              client.getTcpSocket().send(""+view.getId());
+                                          }
+                                          bidTurn = false;
+                                      }
+
+                                  }
+                              }
+        );
+        layout.addView(pass);
+        leftMargin += buttonSize*2;
+
+        Button x = new Button(this);
+        x.setText("X");
+        x.setId(37);
+
+        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams((int) (buttonSize * 1.5), buttonSize);
+        params2.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+        x.setPadding(0,0,0,0);
+        x.setLayoutParams(params2);
+        x.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View view) {
+                                        if(bidTurn==true){
+                                            if(currBid<view.getId()){
+                                                client.getTcpSocket().send(""+view.getId());
+                                            }
+                                            bidTurn = false;
+                                        }
+
+                                    }
+                                }
+        );
+        layout.addView(x);
+        leftMargin += buttonSize*1.5;
     }
 
     public ArrayList<Integer> receiveCards(){
