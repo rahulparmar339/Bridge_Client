@@ -8,148 +8,373 @@
     android:paddingRight="16dp">
 
     <LinearLayout
-        android:id="@+id/lay"
+        android:id="@+id/linearLayoutBottom"
         android:layout_width="match_parent"
-              android:weightSum="13"
-        rue"
-        android:layout_centerHoriz
-        ue"
-        android:orientation="horiz
-        android:layout_height="45dp"
-
-        oid:layout_alignParent>
+        android:weightSum="13"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal = "true"
+        android:orientation="horizontal"
+        android:layout_height="45dp">
 
         <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card2"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card3"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card4"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card5"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card6"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card7"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card8"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card9"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            id:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card10"
-
-            "
-            android:layout_weight= />
-
-
-        <ImageView
-            id:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card11"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            id:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card12"
-
-            "
-            android:layout_weight= />
-
-        <ImageView
-            id:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
-            android:id="@+id/iv_card13"
-
-            "
-            android:layout_weight= />
-
-
-        <ImageView
-            d:layout_width="match_pare
-               android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb"
-               android:layout_height=
             android:id="@+id/iv_card1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
 
-            "
-            android:layout_weight= />
+        <ImageView
+            android:id="@+id/iv_card2"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
 
+        <ImageView
+            android:id="@+id/iv_card3"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card4"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card5"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card6"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card7"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card8"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card9"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card10"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card11"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card12"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card13"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutTop"
+        android:layout_width="match_parent"
+        android:weightSum="13"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal = "true"
+        android:orientation="horizontal"
+        android:layout_height="45dp">
+
+        <ImageView
+            android:id="@+id/iv_card14"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card15"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card16"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card17"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card18"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card19"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card20"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card21"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card22"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card23"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card24"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card25"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card26"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:scaleType="centerInside"
+            android:src="@drawable/cover1_thumb" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRight"
+        android:weightSum="13"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical= "true"
+        android:layout_height="390dp"
+        android:layout_width="45dp">
+
+
+        <ImageView
+            android:id="@+id/iv_card27"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card28"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card29"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card30"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card31"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card32"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card33"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card34"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card35"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card36"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card37"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card38"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:scaleType="fitXY"
+            android:rotation="90"
+            android:orientation="vertical"
+            android:src="@drawable/cover1_thumb" />
+
+        <ImageView
+            android:id="@+id/iv_card39"
+            android:layout_width="45dp"
+            android:layout_height="30dp"
+            android:layout_weight="1"
+            android:rotation="90"
+            android:scaleType="fitXY"
+            android:orientation="vertical"
+            android:src="@drawable/eighth" />
     </LinearLayout>
 </RelativeLayout>
