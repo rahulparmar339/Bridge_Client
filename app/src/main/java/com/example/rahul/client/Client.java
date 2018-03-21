@@ -2,6 +2,7 @@ package com.example.rahul.client;
 
 import android.util.Log;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 /**
@@ -45,11 +46,23 @@ public class Client {
         servers.add(server);
     }
     public Server getServer(int index){
-        return servers.get(index);
+            return servers.get(index);
     }
     public void clearServers(){
         servers.clear();
     }
 
+    public void setTableNo(int no){
+        tableNo = no;
+    }
+    public int getTableNo(){
+        return tableNo;
+    }
+    public void setSeatNo(int no){
+        seatNo = no;
+    }
+    public  int getSeatNo(){
+        return seatNo;
+    }
 
 }

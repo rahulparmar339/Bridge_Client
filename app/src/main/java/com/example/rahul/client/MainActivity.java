@@ -108,6 +108,8 @@ public class MainActivity extends AppCompatActivity {
                 Log.e("Server:","replied "+msg);
 
                 if(msg.compareTo("sucess")==0){
+                    client.setTableNo(tableNo);
+                    client.setSeatNo(seatNo);
                     goToGameActivity();
                 }
             }
