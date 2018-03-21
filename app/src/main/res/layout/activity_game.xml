@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/relativeLayout"
     android:layout_width="match_parent"
@@ -440,5 +441,44 @@
             android:src="@drawable/cover1_thumbr" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/playedCardTop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/playedCardRight"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/cover1_thumb" />
+
+    <ImageView
+        android:id="@+id/playedCardBottom"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playedCardTop"
+        android:layout_alignStart="@+id/playedCardTop"
+        android:layout_below="@+id/playedCardRight"
+        app:srcCompat="@drawable/cover1_thumb" />
+
+    <ImageView
+        android:id="@+id/playedCardRight"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="21dp"
+        android:layout_marginRight="21dp"
+        android:layout_toLeftOf="@+id/linearLayoutRight"
+        android:layout_toStartOf="@+id/linearLayoutRight"
+        app:srcCompat="@drawable/cover1_thumbr" />
+
+    <ImageView
+        android:id="@+id/playedCardLeft"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/playedCardTop"
+        android:layout_marginLeft="22dp"
+        android:layout_marginStart="22dp"
+        android:layout_toEndOf="@+id/linearLayoutLeft"
+        android:layout_toRightOf="@+id/linearLayoutLeft"
+        app:srcCompat="@drawable/cover1_thumbr" />
 
 </RelativeLayout>

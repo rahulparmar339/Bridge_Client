@@ -51,6 +51,7 @@ public class GameActivity extends AppCompatActivity {
     }
 
     public void startGame(){
+        hidePlayedCards();
         displayBiddingBox();
 
         Thread thread = new Thread(new Runnable() {
@@ -90,19 +91,21 @@ public class GameActivity extends AppCompatActivity {
                          int cardId = Integer.parseInt(gameData[2]);
                          int playerPosition = calculatePosition(player);
                          removeCard(cardId, playerPosition);
-                         displayPlayedCard(Integer.parseInt(gameData[1]), Integer.parseInt(gameData[2]));
+                         displayPlayedCard(playerPosition, Integer.parseInt(gameData[2]));
                     }
                     else if(gameData[0].compareTo("dummyPlayer") == 0) {
                          int dummyPlayer = Integer.parseInt(gameData[1]);
                          ArrayList<Integer> dummyPlayerCards = receiveCards();
 
                          int dummyPlayerPosition = calculatePosition(dummyPlayer);
-                         Log.e("checkd",""+dummyPlayer+" "+dummyPlayerPosition);
                          displayCards(dummyPlayerCards, dummyPlayerPosition);
                     }
                     else if(gameData[0].compareTo("winner") == 0){
                             Log.e("winner is",""+gameData[1]);
                             break;
+                    }
+                    else if(gameData[0].compareTo("handComplete") == 0){
+                            hidePlayedCards();
                     }
                 }
 
@@ -110,6 +113,28 @@ public class GameActivity extends AppCompatActivity {
         });
         thread.start();
 
+    }
+    public void hidePlayedCards(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                int resID = getResources().getIdentifier("playedCardTop", "id", getPackageName());
+                ImageView imageView= (ImageView) findViewById(resID);
+                imageView.setVisibility(View.INVISIBLE);
+
+                resID = getResources().getIdentifier("playedCardBottom", "id", getPackageName());
+                imageView= (ImageView) findViewById(resID);
+                imageView.setVisibility(View.INVISIBLE);
+
+                resID = getResources().getIdentifier("playedCardLeft", "id", getPackageName());
+                imageView= (ImageView) findViewById(resID);
+                imageView.setVisibility(View.INVISIBLE);
+
+                resID = getResources().getIdentifier("playedCardRight", "id", getPackageName());
+                imageView= (ImageView) findViewById(resID);
+                imageView.setVisibility(View.INVISIBLE);
+            }
+        });
     }
 
     public int calculatePosition(int player){
@@ -123,11 +148,29 @@ public class GameActivity extends AppCompatActivity {
         return playerPosition;
     }
 
-    public void displayPlayedCard(int player, int playedCard){
+    public void displayPlayedCard(final int playerPosition, final int playedCard){
         handler.post(new Runnable() {
+            @SuppressLint("ResourceType")
             @Override
             public void run() {
-
+                int resID = 0;
+                switch(playerPosition){
+                    case 0:
+                        resID = getResources().getIdentifier("playedCardBottom", "id", getPackageName());
+                        break;
+                    case 1:
+                        resID = getResources().getIdentifier("playedCardLeft", "id", getPackageName());
+                        break;
+                    case 2:
+                        resID = getResources().getIdentifier("playedCardTop", "id", getPackageName());
+                        break;
+                    case 3:
+                        resID = getResources().getIdentifier("playedCardRight", "id", getPackageName());
+                        break;
+                }
+                ImageView imageView= (ImageView) findViewById(resID);
+                imageView.setVisibility(View.VISIBLE);
+                assignImages(playedCard, imageView, playerPosition%2);
             }
         });
     }
@@ -146,6 +189,7 @@ public class GameActivity extends AppCompatActivity {
 
     @SuppressLint("ResourceType")
     public void displayBiddingBox(){
+
         RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
 
         Display display = getWindowManager().getDefaultDisplay();
@@ -695,12 +739,16 @@ public class GameActivity extends AppCompatActivity {
                     switch (playerPosition){
                         case 0:
                             id = "linearLayoutBottom";
+                            break;
                         case 1:
                             id = "linearLayoutLeft";
+                            break;
                         case 2:
                             id = "linearLayoutTop";
+                            break;
                         case 3:
                             id = "linearLayoutRight";
+                            break;
                     }
                     int resID = getResources().getIdentifier(id, "id", getPackageName());
                     LinearLayout parent = (LinearLayout) findViewById(resID);
