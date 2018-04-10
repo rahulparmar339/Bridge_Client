@@ -7,6 +7,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 /**
@@ -68,5 +69,13 @@ public class UDPSocket {
 
     public void close(){
         socket.close();
+    }
+
+    public void setSoTimeout(int time){
+        try {
+            socket.setSoTimeout(time);
+        } catch (SocketException e) {
+            e.printStackTrace();
+        }
     }
 }

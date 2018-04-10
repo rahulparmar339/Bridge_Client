@@ -1,14 +1,19 @@
 package com.example.rahul.client;
 
+import android.app.ActivityManager;
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.format.Formatter;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
@@ -32,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
 
     //public ArrayList<String> serverIpAddress;
     Client client = null;
+    Handler handler = new Handler();
+    int selectedServer = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +49,7 @@ public class MainActivity extends AppCompatActivity {
 
         client = Client.getInstance();
         client.setUdpSocket();
-        displayServerList();
+
     }
     public void setSeatNoSpinner(){
         Spinner spinner = (Spinner) findViewById(R.id.seatNoSpinner);
@@ -57,40 +64,49 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void onClickFindServer(View view){
-       client.clearServers();
+        Thread udpThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                client.clearServers();
+                clearServerList();
+                toggleFindServerButton(false);
 
-       Thread udpThread = new Thread(new Runnable() {
-           @Override
-           public void run() {
+                WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+                String clientIpAddress = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+                String clientData = "client1 " + clientIpAddress;
 
-           client.getUdpSocket().setBroadcast(true);
+                client.getUdpSocket().setBroadcast(true);
+                client.getUdpSocket().broadcast(clientData);
+                client.getUdpSocket().setSoTimeout(5000);
 
-           WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
-           String clientIpAddress = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
-           String clientData = "client1 " + clientIpAddress;
-           client.getUdpSocket().broadcast(clientData);
+                Log.e("sucess","broadcasted : "+clientData);
 
-           Log.e("sucess","broadcasted : "+clientData);
+                int serverCount = 1;
+                while(true) {
+                    String receivedMsg = client.getUdpSocket().receive();
 
-           while(true) {
-               String serverData[] = client.getUdpSocket().receive().split(" ");
-               String serverName = serverData[0];
-               String serverIpAddress = serverData[1];
-               client.addServer(new Server(serverName, serverIpAddress));
+                    //5 second has passed so returned null msg from UDPSocket class
+                    if(receivedMsg == null){
+                        toggleFindServerButton(true);
+                        break;
+                    }
+                    String serverData[] = receivedMsg.split(" ");
+                    String serverName = serverData[0];
+                    String serverIpAddress = serverData[1];
+                    client.addServer(new Server(serverName, serverIpAddress));
+                    displayServerList(serverName, serverIpAddress, serverCount++);
 
-               Log.e("sucess", "server replied: " + serverName + " " + serverIpAddress);
-           }
-
-           }
-       });
+                    Log.e("sucess", "server replied: " + serverName + " " + serverIpAddress);
+                }
+            }
+        });
         udpThread.start();
     }
 
 
     public void onClickConnectServer(View view){
 
-        final String serverIP = client.getServer(0).getIP();
-
+        final String serverIP = client.getServer(selectedServer-1).getIP();
         final EditText tableNoEditText= findViewById(R.id.tableNoEditText);
         final int tableNo = Integer.parseInt(tableNoEditText.getText().toString())-1;
 
@@ -125,37 +141,63 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public void displayServerList(){
+    public void displayServerList(String serverName, String serverIp, final int serverCount){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
 
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.serverListRelativeLayout);
+                final RelativeLayout layout = (RelativeLayout)findViewById(R.id.serverListRelativeLayout);
+                String serverName = client.getLastServer().getName();
+                String serverIp = client.getLastServer().getIP();
 
-        Random rnd = new Random();
-        int prevTextViewId = 0;
+                Log.e("check",serverName+" "+serverIp+" "+serverCount);
+                final Button Button = new Button(MainActivity.this);
+                Button.setText(serverName+ " "+ serverIp);
+                Button.setTextColor(Color.BLACK);
+                Button.setBackgroundColor(Color.RED);
+                Button.setId(serverCount);
+                Button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if(selectedServer != -1){
+                            layout.getChildAt(selectedServer-1).setBackgroundColor(Color.RED);
+                        }
+                        v.setBackgroundColor(Color.GREEN);
+                        selectedServer = v.getId();
+                    }
+                });
 
-        for(int i = 0; i < 10; i++)
-        {
-            final TextView textView = new TextView(this);
-            textView.setText("Text "+i);
-            textView.setTextColor(rnd.nextInt() | 0xff000000);
-            //textView.setTextSize(20);
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(layout.getWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
+                if(serverCount!=1)
+                    params.addRule(RelativeLayout.BELOW, serverCount-1);
+                else
+                    params.addRule(RelativeLayout.BELOW);
 
+                Button.setLayoutParams(params);
+                layout.addView(Button, params);
 
-            int curTextViewId = prevTextViewId + 1;
-            textView.setId(curTextViewId);
-            final RelativeLayout.LayoutParams params =
-                    new RelativeLayout.LayoutParams(250,100);
+            }
+        });
 
-            params.addRule(RelativeLayout.BELOW, prevTextViewId);
-            textView.setLayoutParams(params);
-
-            prevTextViewId = curTextViewId;
-            layout.addView(textView, params);
-
-
-            //Log.e("Height :"," "+textView.getHeight());
-            //Log.e("Width  :"," "+textView.getWidth());
-
-        }
     }
 
+    public void clearServerList(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout layout = (RelativeLayout)findViewById(R.id.serverListRelativeLayout);
+                layout.removeAllViews();
+            }
+        });
+    }
+
+    public void toggleFindServerButton(final boolean state){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Button findServerButton = (Button) findViewById(R.id.findServerButton);
+                findServerButton.setEnabled(state);
+            }
+        });
+    }
 }

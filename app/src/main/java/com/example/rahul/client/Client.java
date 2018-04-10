@@ -48,6 +48,13 @@ public class Client {
     public Server getServer(int index){
             return servers.get(index);
     }
+    public Server getLastServer() { return servers.get(servers.size()-1); }
+    public ArrayList<Server> getServers(){
+        return servers;
+    }
+    public int getServersSize(){
+        return servers.size();
+    }
     public void clearServers(){
         servers.clear();
     }
