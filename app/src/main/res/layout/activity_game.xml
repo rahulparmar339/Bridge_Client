@@ -11,232 +11,20 @@
     <LinearLayout
         android:id="@+id/linearLayoutBottom"
         android:layout_width="match_parent"
-        android:weightSum="13"
+        android:layout_height="45dp"
         android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal = "true"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:layout_height="45dp">
-
-        <ImageView
-            android:id="@+id/iv_card1"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card2"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card3"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card4"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card5"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card6"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card7"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card8"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card9"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card10"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card11"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card12"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card13"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-
-    </LinearLayout>
+        android:weightSum="13"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutTop"
         android:layout_width="match_parent"
-        android:weightSum="13"
+        android:layout_height="45dp"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal = "true"
+        android:layout_centerHorizontal="true"
         android:orientation="horizontal"
-        android:layout_height="45dp">
-
-        <ImageView
-            android:id="@+id/iv_card14"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card15"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card16"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card17"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card18"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card19"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card20"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card21"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card22"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card23"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card24"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card25"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-
-        <ImageView
-            android:id="@+id/iv_card26"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:scaleType="centerInside"
-            android:src="@drawable/cover1_thumb" />
-    </LinearLayout>
+        android:weightSum="13"></LinearLayout>
 
     <LinearLayout
         android:id="@+id/linearLayoutRight"
@@ -246,98 +34,6 @@
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:weightSum="13">
-
-        <ImageView
-            android:id="@+id/iv_card27"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card28"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card29"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card30"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card31"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card32"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card33"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card34"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card35"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card36"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card37"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card38"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card39"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
     </LinearLayout>
 
     <LinearLayout
@@ -348,98 +44,6 @@
         android:layout_centerVertical="true"
         android:orientation="vertical"
         android:weightSum="13">
-
-        <ImageView
-            android:id="@+id/iv_card40"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card41"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card42"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card43"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card44"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card45"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card46"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card47"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card48"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card49"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card50"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card51"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
-        <ImageView
-            android:id="@+id/iv_card52"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:src="@drawable/cover1_thumbr" />
-
     </LinearLayout>
 
     <ImageView
@@ -480,5 +84,61 @@
         android:layout_toEndOf="@+id/linearLayoutLeft"
         android:layout_toRightOf="@+id/linearLayoutLeft"
         app:srcCompat="@drawable/cover1_thumbr" />
+
+    <TextView
+        android:id="@+id/northSouthScoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/playedCardLeft"
+        android:layout_alignStart="@+id/playedCardLeft"
+        android:layout_alignTop="@+id/linearLayoutLeft"
+        android:layout_marginTop="19dp"
+        android:text="NS: 0" />
+
+    <TextView
+        android:id="@+id/eastWestScoreTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/northSouthScoreTextView"
+        android:layout_alignBottom="@+id/northSouthScoreTextView"
+        android:layout_alignEnd="@+id/playedCardRight"
+        android:layout_alignRight="@+id/playedCardRight"
+        android:text="EW: 0" />
+
+    <TextView
+        android:id="@+id/northBiddingDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/northSouthScoreTextView"
+        android:layout_alignStart="@+id/northSouthScoreTextView"
+        android:layout_alignTop="@+id/linearLayoutLeft"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/southBiddingDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/northSouthScoreTextView"
+        android:layout_alignStart="@+id/northSouthScoreTextView"
+        android:layout_below="@+id/northSouthScoreTextView"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/eastBiddingDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/playedCardRight"
+        android:layout_alignRight="@+id/playedCardRight"
+        android:layout_alignTop="@+id/linearLayoutRight"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/westBiddingDataTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/eastWestScoreTextView"
+        android:layout_alignRight="@+id/eastWestScoreTextView"
+        android:layout_below="@+id/eastWestScoreTextView"
+        android:text="" />
 
 </RelativeLayout>

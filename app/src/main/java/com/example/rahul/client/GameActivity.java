@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
+import android.provider.ContactsContract;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -16,7 +17,10 @@ import android.widget.GridView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import org.w3c.dom.Text;
 
 import java.io.IOException;
 import java.io.OutputStream;
@@ -31,6 +35,8 @@ public class GameActivity extends AppCompatActivity {
 
     Client client = null;
     Handler handler = new Handler();
+    int totalTable = 0;
+    int boardsPerTable = 0;
     int currBid = 0;
     int doubleStatus =0;
     int redoubleStatus = 0;
@@ -52,60 +58,85 @@ public class GameActivity extends AppCompatActivity {
 
     public void startGame(){
         hidePlayedCards();
-        displayBiddingBox();
+        hideScoreCards();
+        hideBiddingDataBox();
 
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                ArrayList<Integer> cards = receiveCards();
-                displayCards(cards,0);
 
-                while(true){
-                    String bidData = client.getTcpSocket().receive();
-                    Log.e("check","bidData: "+bidData);
-                    
-                    if(bidData.compareTo("bid finished")==0){
-                        removeBiddingBox();
-                        break;
-                    }
-                    else {
-                        bidTurn = true;
-                        String bidDataArray[] = bidData.split(" ");
-                        currBid = Integer.parseInt(bidDataArray[0]);
-                        lastProposer = Integer.parseInt(bidDataArray[1]);
-                        doubleStatus = Integer.parseInt(bidDataArray[2]);
-                        redoubleStatus = Integer.parseInt(bidDataArray[3]);
-                    }
-                }
+                receiveTotalTableAndBoardperTable();
 
-                while(true){
-                    String gameData[] = client.getTcpSocket().receive().split(" ");
-                    if(gameData[0].compareTo("currSuit") == 0){
-                         Log.e("check",""+gameData[1]);
-                         if(gameData[1].compareTo("dummyTurn") == 0)dummyTurn = true;
-                         currSuit = Integer.parseInt(gameData[2]);
-                         myTurn = true;
-                    }
-                    else if(gameData[0].compareTo("displayPlayedCard") == 0){
-                         int player = Integer.parseInt(gameData[1]);
-                         int cardId = Integer.parseInt(gameData[2]);
-                         int playerPosition = calculatePosition(player);
-                         removeCard(cardId, playerPosition);
-                         displayPlayedCard(playerPosition, Integer.parseInt(gameData[2]));
-                    }
-                    else if(gameData[0].compareTo("dummyPlayer") == 0) {
-                         int dummyPlayer = Integer.parseInt(gameData[1]);
-                         ArrayList<Integer> dummyPlayerCards = receiveCards();
+                for(int i=0; i<totalTable * boardsPerTable ;i++){
+                    hidePlayedCards();
+                    hideScoreCards();
+                    displayBiddingBox(); //id start from 1 to 38
+                    displayReversedCards(); //id start from 40 to 91
+                    displayBiddingDataBox();
 
-                         int dummyPlayerPosition = calculatePosition(dummyPlayer);
-                         displayCards(dummyPlayerCards, dummyPlayerPosition);
+                    ArrayList<Integer> cards = receiveCards();
+                    displayCards(cards,0);
+
+                    while(true){
+                        String bidData[] = client.getTcpSocket().receive().split(" ");
+                        Log.e("check","bidData: "+bidData[0]);
+
+                        if(bidData[0].compareTo("bidTurn") == 0){
+                            bidTurn = true;
+                            currBid = Integer.parseInt(bidData[1]);
+                            lastProposer = Integer.parseInt(bidData[2]);
+                            doubleStatus = Integer.parseInt(bidData[3]);
+                            redoubleStatus = Integer.parseInt(bidData[4]);
+
+                            makeToast("It's your bid Turn");
+                        }
+                        else if(bidData[0].compareTo("bidData") == 0){
+                            int bidder = Integer.parseInt(bidData[1]);
+                            int bid = Integer.parseInt(bidData[2]);
+                            updateBiddingDataBox(bidder, bid);
+                        }
+                        else if(bidData[0].compareTo("bidFinished")==0){
+                            removeBiddingBox();
+                            hideBiddingDataBox();
+                            break;
+                        }
                     }
-                    else if(gameData[0].compareTo("winner") == 0){
+
+                    while(true){
+                        String gameData[] = client.getTcpSocket().receive().split(" ");
+                        if(gameData[0].compareTo("currSuit") == 0){
+                            Log.e("check",""+gameData[1]);
+                            if(gameData[1].compareTo("dummyTurn") == 0)dummyTurn = true;
+                            currSuit = Integer.parseInt(gameData[2]);
+                            myTurn = true;
+
+                            if(dummyTurn){
+                                makeToast("Its dummy Turn");
+                            }else{
+                                makeToast("Its your Turn");
+                            }
+                        }
+                        else if(gameData[0].compareTo("displayPlayedCard") == 0){
+                            int player = Integer.parseInt(gameData[1]);
+                            int cardId = Integer.parseInt(gameData[2]);
+                            int playerPosition = calculatePosition(player);
+                            removeCard(cardId, playerPosition);
+                            displayPlayedCard(playerPosition, Integer.parseInt(gameData[2]));
+                        }
+                        else if(gameData[0].compareTo("dummyPlayer") == 0) {
+                            int dummyPlayer = Integer.parseInt(gameData[1]);
+                            ArrayList<Integer> dummyPlayerCards = receiveCards();
+                            int dummyPlayerPosition = calculatePosition(dummyPlayer);
+                            displayCards(dummyPlayerCards, dummyPlayerPosition);
+                        }
+                        else if(gameData[0].compareTo("winner") == 0){
                             Log.e("winner is",""+gameData[1]);
                             break;
-                    }
-                    else if(gameData[0].compareTo("handComplete") == 0){
+                        }
+                        else if(gameData[0].compareTo("handComplete") == 0){
+                            updateScoreCards(Integer.parseInt(gameData[1]), Integer.parseInt(gameData[2]));
                             hidePlayedCards();
+                        }
                     }
                 }
 
@@ -114,6 +145,7 @@ public class GameActivity extends AppCompatActivity {
         thread.start();
 
     }
+
     public void hidePlayedCards(){
         handler.post(new Runnable() {
             @Override
@@ -135,6 +167,372 @@ public class GameActivity extends AppCompatActivity {
                 imageView.setVisibility(View.INVISIBLE);
             }
         });
+    }
+
+    public void hideScoreCards(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                int resID = getResources().getIdentifier("northSouthScoreTextView", "id", getPackageName());
+                TextView textView = findViewById(resID);
+                textView.setVisibility(View.INVISIBLE);
+
+                resID = getResources().getIdentifier("eastWestScoreTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    public void displayReversedCards(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                //imageview id start from 40
+
+                //display reveres linearLayoutBottom
+                LinearLayout layout = findViewById(R.id.linearLayoutBottom);
+                for(int i=0; i<13; i++){
+                    ImageView imageView = new ImageView(GameActivity.this);
+                    imageView.setId(i+40);
+                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.cover1_thumb));
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
+                    imageView.setLayoutParams(params);
+
+                    layout.addView(imageView);
+                }
+
+                //display reveres linearLayoutTop
+                layout = findViewById(R.id.linearLayoutTop);
+                for(int i=13; i<26; i++){
+                    ImageView imageView = new ImageView(GameActivity.this);
+                    imageView.setId(i+40);
+                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.cover1_thumb));
+                    imageView.setScaleType(ImageView.ScaleType.CENTER_INSIDE);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
+                    imageView.setLayoutParams(params);
+
+                    layout.addView(imageView);
+                }
+
+                //display reveres linearLayoutRight
+                layout = findViewById(R.id.linearLayoutRight);
+                for(int i=26; i<39; i++){
+                    ImageView imageView = new ImageView(GameActivity.this);
+                    imageView.setId(i+40);
+                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.cover1_thumbr));
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
+                    imageView.setLayoutParams(params);
+
+                    layout.addView(imageView);
+                }
+
+                //display reveres linearLayoutLeft
+                layout = findViewById(R.id.linearLayoutLeft);
+                for(int i=39; i<52; i++){
+                    ImageView imageView = new ImageView(GameActivity.this);
+                    imageView.setId(i+40);
+                    imageView.setImageDrawable(getResources().getDrawable(R.drawable.cover1_thumbr));
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                            ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT, 1.0f);
+                    imageView.setLayoutParams(params);
+
+                    layout.addView(imageView);
+                }
+            }
+        });
+    }
+
+    public void displayBiddingDataBox(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
+
+                int resID = getResources().getIdentifier("northBiddingDataTextView", "id", getPackageName());
+                TextView textView = findViewById(resID);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("");
+
+                resID = getResources().getIdentifier("eastBiddingDataTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("");
+
+                resID = getResources().getIdentifier("southBiddingDataTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("");
+
+                resID = getResources().getIdentifier("westBiddingDataTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("");
+            }
+        });
+    }
+
+    public void updateBiddingDataBox(final int bidder, final int bid){
+        handler.post(new Runnable() {
+            @SuppressLint("ResourceType")
+            @Override
+            public void run() {
+                TextView textView = null;
+                int resID = 0;
+                String playerBid = null;
+                if(bid == 37){
+                    playerBid = "X";
+                }
+                else if(bid == 36){
+                    playerBid = "PASS";
+                }
+                else if(bid == 35){
+                    playerBid = "XX";
+                }
+                else{
+                    playerBid = ""+(bid/5 + 1);
+                    switch(bid%5){
+                        case 0:
+                            playerBid += "C";
+                            break;
+                        case 1:
+                            playerBid += "D";
+                            break;
+                        case 2:
+                            playerBid += "H";
+                            break;
+                        case 3:
+                            playerBid += "S";
+                            break;
+                        case 4:
+                            playerBid += "NT";
+                            break;
+                    }
+                }
+                switch (bidder){
+                    case 0:
+                        resID = getResources().getIdentifier("northBiddingDataTextView", "id", getPackageName());
+                        textView = findViewById(resID);
+                        textView.setText("N: "+playerBid);
+                        break;
+                    case 1:
+                        resID = getResources().getIdentifier("eastBiddingDataTextView", "id", getPackageName());
+                        textView = findViewById(resID);
+                        textView.setText("E: "+playerBid);
+                        break;
+                    case 2:
+                        resID = getResources().getIdentifier("southBiddingDataTextView", "id", getPackageName());
+                        textView = findViewById(resID);
+                        textView.setText("S: "+playerBid);
+                        break;
+                    case 3:
+                        resID = getResources().getIdentifier("westBiddingDataTextView", "id", getPackageName());
+                        textView = findViewById(resID);
+                        textView.setText("W: "+playerBid);
+                        break;
+                }
+            }
+        });
+    }
+
+    public void hideBiddingDataBox(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
+
+                int resID = getResources().getIdentifier("northBiddingDataTextView", "id", getPackageName());
+                TextView textView = findViewById(resID);
+                textView.setVisibility(View.INVISIBLE);
+
+                resID = getResources().getIdentifier("eastBiddingDataTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.INVISIBLE);
+
+                resID = getResources().getIdentifier("southBiddingDataTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.INVISIBLE);
+
+                resID = getResources().getIdentifier("westBiddingDataTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.INVISIBLE);
+            }
+        });
+    }
+
+    @SuppressLint("ResourceType")
+    public void displayBiddingBox(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
+
+                Display display = getWindowManager().getDefaultDisplay();
+                int displayWidth = display.getWidth();
+                int displayHeight = display.getHeight();
+
+                int buttonSize = (int) (displayWidth*(0.1));
+                int leftMargin = (int) (displayWidth*(0.25));
+                int topMargin = (int) ((displayHeight - (buttonSize * 7)) /2);
+                int bottomMargin = (int) (displayHeight- topMargin - buttonSize);
+                int rightMargin = (int) (displayWidth - leftMargin);
+
+                //Log.e("check",""+displayWidth+" "+leftMargin+" "+displayHeight+" "+rightMargin+" "+buttonSize);
+                // bidding box id start from 1 to 38
+                for(int i=0; i<7; i++){
+                    leftMargin = (int) (displayWidth*(0.25));
+                    for(int j=0; j<5; j++){
+                        Button button = new Button(GameActivity.this);
+                        button.setText("B"+ (i*5+j+1));
+                        button.setId(i*5+j+1);
+
+                        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(buttonSize,buttonSize);
+                        params.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+                        button.setPadding(0,0,0,0);
+                        button.setLayoutParams(params);
+
+                        button.setOnClickListener(new View.OnClickListener() {
+                                                      @Override
+                                                      public void onClick(View view) {
+                                                          if(bidTurn==true){
+                                                              if(currBid<view.getId()){
+                                                                  client.getTcpSocket().send(""+view.getId());
+                                                                  //Log.e("butcheck",""+view.getId());
+                                                              }
+                                                              bidTurn = false;
+                                                          }
+
+                                                      }
+                                                  }
+                        );
+                        layout.addView(button);
+                        leftMargin+=buttonSize;
+                    }
+                    topMargin += buttonSize;
+                }
+
+                leftMargin = (int) (displayWidth*(0.25));
+
+                Button xx = new Button(GameActivity.this);
+                xx.setText("XX");
+                xx.setId(36);
+
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) (buttonSize * 1.5), buttonSize);
+                params.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+                xx.setPadding(0,0,0,0);
+                xx.setLayoutParams(params);
+
+                xx.setOnClickListener(new View.OnClickListener() {
+                                          @Override
+                                          public void onClick(View view) {
+                                              if(bidTurn==true){
+                                                  if(currBid<view.getId()){
+                                                      client.getTcpSocket().send(""+view.getId());
+                                                  }
+                                                  bidTurn = false;
+                                              }
+
+                                          }
+                                      }
+                );
+                layout.addView(xx);
+                leftMargin += buttonSize*1.5;
+
+                Button pass = new Button(GameActivity.this);
+                pass.setText("PASS");
+                pass.setId(37);
+
+                RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams((int) (buttonSize * 2), buttonSize);
+                params1.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+                pass.setPadding(0,0,0,0);
+                pass.setLayoutParams(params1);
+
+                pass.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View view) {
+                                                if(bidTurn==true){
+                                                    if(currBid<view.getId()){
+                                                        client.getTcpSocket().send(""+view.getId());
+                                                    }
+                                                    bidTurn = false;
+                                                }
+
+                                            }
+                                        }
+                );
+                layout.addView(pass);
+                leftMargin += buttonSize*2;
+
+                Button x = new Button(GameActivity.this);
+                x.setText("X");
+                x.setId(38);
+
+                RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams((int) (buttonSize * 1.5), buttonSize);
+                params2.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
+                x.setPadding(0,0,0,0);
+                x.setLayoutParams(params2);
+                x.setOnClickListener(new View.OnClickListener() {
+                                         @Override
+                                         public void onClick(View view) {
+                                             if(bidTurn==true){
+                                                 if(currBid<view.getId()){
+                                                     client.getTcpSocket().send(""+view.getId());
+                                                 }
+                                                 bidTurn = false;
+                                             }
+
+                                         }
+                                     }
+                );
+                layout.addView(x);
+                leftMargin += buttonSize*1.5;
+            }
+        });
+    }
+
+    public void removeBiddingBox(){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
+                for(int i=1; i<39 ;i++){
+                    layout.removeView(findViewById(i));
+                }
+            }
+        });
+    }
+
+    public void updateScoreCards(final int nsScore, final int esScore){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                int resID = getResources().getIdentifier("northSouthScoreTextView", "id", getPackageName());
+                TextView textView = findViewById(resID);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("NS : "+nsScore);
+
+                resID = getResources().getIdentifier("eastWestScoreTextView", "id", getPackageName());
+                textView = findViewById(resID);
+                textView.setVisibility(View.VISIBLE);
+                textView.setText("ES : "+esScore);
+            }
+        });
+    }
+
+    public void receiveTotalTableAndBoardperTable(){
+        String message[] = client.getTcpSocket().receive().split(" ");
+        totalTable = Integer.parseInt(message[0]);
+        boardsPerTable = Integer.parseInt(message[1]);
+
+        Log.e("TableAndBoards", " "+totalTable+" "+boardsPerTable);
     }
 
     public int calculatePosition(int player){
@@ -175,143 +573,6 @@ public class GameActivity extends AppCompatActivity {
         });
     }
 
-    public void removeBiddingBox(){
-        handler.post(new Runnable() {
-            @Override
-            public void run() {
-                RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
-                for(int i=0; i<38 ;i++){
-                    layout.removeView(findViewById(i));
-                }
-            }
-        });
-    }
-
-    @SuppressLint("ResourceType")
-    public void displayBiddingBox(){
-
-        RelativeLayout layout = (RelativeLayout)findViewById(R.id.relativeLayout);
-
-        Display display = getWindowManager().getDefaultDisplay();
-        int displayWidth = display.getWidth();
-        int displayHeight = display.getHeight();
-
-        int buttonSize = (int) (displayWidth*(0.1));
-        int leftMargin = (int) (displayWidth*(0.25));
-        int topMargin = (int) ((displayHeight - (buttonSize * 7)) /2);
-        int bottomMargin = (int) (displayHeight- topMargin - buttonSize);
-        int rightMargin = (int) (displayWidth - leftMargin);
-
-        //Log.e("check",""+displayWidth+" "+leftMargin+" "+displayHeight+" "+rightMargin+" "+buttonSize);
-
-        for(int i=0; i<7; i++){
-            leftMargin = (int) (displayWidth*(0.25));
-            for(int j=0; j<5; j++){
-                Button button = new Button(this);
-                button.setText("B"+ (i*5+j));
-                button.setId(i*5+j);
-
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(buttonSize,buttonSize);
-                params.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
-                button.setPadding(0,0,0,0);
-                button.setLayoutParams(params);
-
-                button.setOnClickListener(new View.OnClickListener() {
-                                              @Override
-                                              public void onClick(View view) {
-                                                    if(bidTurn==true){
-                                                        if(currBid<view.getId()){
-                                                            client.getTcpSocket().send(""+view.getId());
-                                                        }
-                                                        bidTurn = false;
-                                                    }
-
-                                              }
-                                          }
-                );
-                layout.addView(button);
-                leftMargin+=buttonSize;
-            }
-            topMargin += buttonSize;
-        }
-
-        leftMargin = (int) (displayWidth*(0.25));
-
-        Button xx = new Button(this);
-        xx.setText("XX");
-        xx.setId(35);
-
-        RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams((int) (buttonSize * 1.5), buttonSize);
-        params.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
-        xx.setPadding(0,0,0,0);
-        xx.setLayoutParams(params);
-
-        xx.setOnClickListener(new View.OnClickListener() {
-                                      @Override
-                                      public void onClick(View view) {
-                                          if(bidTurn==true){
-                                              if(currBid<view.getId()){
-                                                  client.getTcpSocket().send(""+view.getId());
-                                              }
-                                              bidTurn = false;
-                                          }
-
-                                      }
-                                  }
-        );
-        layout.addView(xx);
-        leftMargin += buttonSize*1.5;
-
-        Button pass = new Button(this);
-        pass.setText("PASS");
-        pass.setId(36);
-
-        RelativeLayout.LayoutParams params1 = new RelativeLayout.LayoutParams((int) (buttonSize * 2), buttonSize);
-        params1.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
-        pass.setPadding(0,0,0,0);
-        pass.setLayoutParams(params1);
-
-        pass.setOnClickListener(new View.OnClickListener() {
-                                  @Override
-                                  public void onClick(View view) {
-                                      if(bidTurn==true){
-                                          if(currBid<view.getId()){
-                                              client.getTcpSocket().send(""+view.getId());
-                                          }
-                                          bidTurn = false;
-                                      }
-
-                                  }
-                              }
-        );
-        layout.addView(pass);
-        leftMargin += buttonSize*2;
-
-        Button x = new Button(this);
-        x.setText("X");
-        x.setId(37);
-
-        RelativeLayout.LayoutParams params2 = new RelativeLayout.LayoutParams((int) (buttonSize * 1.5), buttonSize);
-        params2.setMargins(leftMargin,topMargin,rightMargin,bottomMargin);
-        x.setPadding(0,0,0,0);
-        x.setLayoutParams(params2);
-        x.setOnClickListener(new View.OnClickListener() {
-                                    @Override
-                                    public void onClick(View view) {
-                                        if(bidTurn==true){
-                                            if(currBid<view.getId()){
-                                                client.getTcpSocket().send(""+view.getId());
-                                            }
-                                            bidTurn = false;
-                                        }
-
-                                    }
-                                }
-        );
-        layout.addView(x);
-        leftMargin += buttonSize*1.5;
-    }
-
     public ArrayList<Integer> receiveCards(){
         ArrayList<Integer> cards = new ArrayList<>();
         String cardsString = client.getTcpSocket().receive();
@@ -349,9 +610,9 @@ public class GameActivity extends AppCompatActivity {
                         end = 39;
                         break;
                 }
+                int id= start+40;
                 for(int i =0; start<end; start++, i++){
-                    int resID = getResources().getIdentifier("iv_card"+(start+1), "id", getPackageName());
-                    iv_cards[i] = (ImageView) findViewById(resID);
+                    iv_cards[i] = (ImageView) findViewById(id+i);
                     iv_cards[i].setId(cards.get(i));
                     assignImages(cards.get(i), iv_cards[i], position % 2);
                     if(position == 0 || position == 2)
@@ -816,5 +1077,15 @@ public class GameActivity extends AppCompatActivity {
         map.put(413, "ks");
         map.put(414, "as");
         return map.get(card);
+    }
+
+    public void makeToast(final String msg){
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), msg,
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
